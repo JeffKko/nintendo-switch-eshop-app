@@ -14,12 +14,9 @@ import {
   Grow,
 } from 'grommet-icons';
 import {
-  BrowserRouter as Router,
   Switch,
   Route,
   NavLink,
-  useLocation,
-  useRouteMatch,
 } from 'react-router-dom'
 import Sales from './pages/Sales'
 import Ranking from './pages/Ranking'
@@ -88,7 +85,6 @@ const AppContainer = styled(Grommet)`
 
 function App() {
   const [isShowSidebar, setShowSidebar] = useState(false)
-  // const {pathname} = useLocation()
 
   const exchange = {
     base: 'TWD',
@@ -100,7 +96,7 @@ function App() {
   }
 
   useEffect(() => {
-    axios('http://192.168.68.109:8080/rates')
+    axios(`${process.env.REACT_APP_API_URL}/rates`)
       .then(res => {
         exchange.rates = res.data
       })

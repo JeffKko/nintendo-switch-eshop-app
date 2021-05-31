@@ -65,14 +65,14 @@ const Sales = function() {
 
     console.log('fetchGameList')
 
-    axios(`http://192.168.68.109:8080/sales?count=${pageCount[0]}&offset=${pageCount[1]}&country=HK`)
+    axios(`${process.env.REACT_APP_API_URL}/sales?count=${pageCount[0]}&offset=${pageCount[1]}&country=HK`)
       .then(res => {
         gameList = res.data.contents
         totalCount.current = res.data.total
 
         console.log(res.data.contents.map(v => v.id).join())
 
-        return axios(`http://192.168.68.109:8080/price?ids=${res.data.contents.map(v => v.id).join()}&country=HK`)
+        return axios(`${process.env.REACT_APP_API_URL}/price?ids=${res.data.contents.map(v => v.id).join()}&country=HK`)
           .then(({data: {prices}}) => {
             console.log(prices)
 
