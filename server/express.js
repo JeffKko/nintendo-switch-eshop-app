@@ -55,8 +55,6 @@ app.get('/rates', function(req, res) {
   //   })
 })
 
-console.log('gx')
-
 app.get('/sales', function(req, res) {
   axios(`https://ec.nintendo.com/api/${req.query.country}/${regionMap[req.query.country]}/search/sales?count=${req.query.count}&offset=${req.query.offset}`)
     .then(({ data }) => {
@@ -76,6 +74,14 @@ app.get('/price', function(req, res) {
 
 app.get('/ranking', function(req, res) {
   axios(`https://ec.nintendo.com/api/${req.query.country}/${regionMap[req.query.country]}/search/ranking?count=${req.query.count}&offset=${req.query.offset}`)
+    .then(({ data }) => {
+      console.log(data)
+      res.status(200).json(data)
+    })
+})
+
+app.get('/new', function(req, res) {
+  axios(`https://ec.nintendo.com/api/${req.query.country}/${regionMap[req.query.country]}/search/new?count=${req.query.count}&offset=${req.query.offset}`)
     .then(({ data }) => {
       console.log(data)
       res.status(200).json(data)

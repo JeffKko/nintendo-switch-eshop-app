@@ -22,6 +22,8 @@ import {
   useRouteMatch,
 } from 'react-router-dom'
 import Sales from './pages/Sales'
+import Ranking from './pages/Ranking'
+import New from './pages/New'
 import './App.css';
 import AppBar from './AppBar'
 import RatesContext from './contexts/Rates'
@@ -104,9 +106,6 @@ function App() {
       })
   }, [])
 
-  const Top = () => <div> top </div>
-  const New = () => <div> new </div>
-
   return (
     <AppContainer theme={theme} themeMode="dark">
 
@@ -121,8 +120,8 @@ function App() {
                 <Route path="/" exact>
                   <Sales />
                 </Route>
-                <Route path="/top">
-                  <Top />
+                <Route path="/ranking">
+                  <Ranking />
                 </Route>
                 <Route path="/new">
                   <New />
@@ -148,12 +147,13 @@ function App() {
           justify="center"
           align="center"
           background="brand"
+          gap="large"
         >
           <NavbarItem to="/" activeClassName="active" exact>
             <Currency />
             <NavbarItemText>Sales</NavbarItemText>
           </NavbarItem>
-          <NavbarItem to="/top" activeClassName="active">
+          <NavbarItem to="/ranking" activeClassName="active">
             <Trophy />
             <NavbarItemText>Top</NavbarItemText>
           </NavbarItem>

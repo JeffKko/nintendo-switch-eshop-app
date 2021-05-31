@@ -90,15 +90,22 @@ const GameItem = ({className, data}) => {
     >
       <GameItemImage src={data.hero_banner_url} alt={data.formal_name} loading="lazy" />
       <GameItemContent>
-        <GameItemContentBadge>
-          { calculateDiscount(data.regularPrice.raw_value, data.discountPrice.raw_value) }
-        </GameItemContentBadge>
+        {data.discountPrice &&
+          <GameItemContentBadge>
+            { calculateDiscount(data.regularPrice.raw_value, data.discountPrice.raw_value) }
+          </GameItemContentBadge>
+        }
         <div>{data.id}</div>
         <GameItemContentTitle>{data.formal_name}</GameItemContentTitle>
         <GameItemContentFooter>
         <GameItemContentFooterPrice>
-          <span>{RatesContext.base}  {exchangePrice(data.discountPrice.raw_value)}</span>
-          <GameItemContentFooterPriceRegular>{exchangePrice(data.regularPrice.raw_value)}</GameItemContentFooterPriceRegular>
+          {data.discountPrice
+            ? <>
+                <span>{RatesContext.base}  {exchangePrice(data.discountPrice.raw_value)}</span>
+                <GameItemContentFooterPriceRegular>{exchangePrice(data.regularPrice.raw_value)}</GameItemContentFooterPriceRegular>
+              </>
+            : <span>{RatesContext.base} {exchangePrice(data.regularPrice.raw_value)}</span>
+          }
         </GameItemContentFooterPrice>
           <Button icon={<Favorite color="red" />} hoverIndicator />
           {/* <Button icon={<ShareOption color="plain" />} hoverIndicator /> */}

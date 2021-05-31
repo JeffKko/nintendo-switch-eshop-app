@@ -27,7 +27,7 @@ const AppBar = (props) => {
       case '/':
         title = '限時特價'
         break;
-      case '/top':
+      case '/ranking':
         title = '熱銷排行'
         break;
       case '/new':
