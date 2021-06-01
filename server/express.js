@@ -16,10 +16,6 @@ app.use(cors({
 }))
 app.use(cookieParser())
 
-console.log(express.static(process.cwd() + '/build'))
-
-console.log(process.cwd())
-
 app.use('/', express.static(process.cwd() + '/build'))
 app.use(express.json()) // parse json
 
