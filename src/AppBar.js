@@ -40,7 +40,8 @@ const AppBar = (props) => {
   }, [pathname])
 
   function onClickHandler() {
-    props.setShowSidebar(prev => !prev)
+    // props.setShowSidebar(prev => !prev)
+    alert('notification center ?')
   }
 
   return (

@@ -4,8 +4,8 @@ const cookieParser = require('cookie-parser')
 const app = express()
 const axios = require('axios')
 
-console.log(process.env.NODE_ENV)
-console.log(process.env.REACT_APP_API_URL)
+// TODO: FE Router history mode:
+// https://router.vuejs.org/zh/guide/essentials/history-mode.html#%E5%90%8E%E7%AB%AF%E9%85%8D%E7%BD%AE%E4%BE%8B%E5%AD%90
 
 app.use(cors({
   origin: [
