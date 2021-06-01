@@ -4,6 +4,9 @@ const cookieParser = require('cookie-parser')
 const app = express()
 const axios = require('axios')
 
+console.log(process.env.NODE_ENV)
+console.log(process.env.REACT_APP_API_URL)
+
 app.use(cors({
   origin: [
     'http://192.168.68.109:3000',
@@ -13,17 +16,16 @@ app.use(cors({
 }))
 app.use(cookieParser())
 
-console.log(express.static(process.cwd() + '/dist'))
+console.log(express.static(process.cwd() + '/build'))
 
 console.log(process.cwd())
 
-app.use('/', express.static(process.cwd() + '/dist'))
+app.use('/', express.static(process.cwd() + '/build'))
 app.use(express.json()) // parse json
 
 app.get('/test', (req, res) => {
   res.status(200).send('im a test')
 })
-
 
 const regionMap = {
   HK: 'zh',
