@@ -13,7 +13,7 @@ import {
   Heading,
 } from 'grommet'
 import {
-  Notification,
+  Language,
 } from 'grommet-icons';
 
 const AppBar = (props) => {
@@ -41,7 +41,7 @@ const AppBar = (props) => {
 
   function onClickHandler() {
     // props.setShowSidebar(prev => !prev)
-    alert('notification center ?')
+    props.setIsShowCountrySelector(prev => !prev)
   }
 
   return (
@@ -57,7 +57,7 @@ const AppBar = (props) => {
       {...props}
     >
       <Heading level='3' margin='none'>{appBarTitle}</Heading>
-      <Button icon={<Notification />} onClick={onClickHandler} />
+      <Button icon={<Language />} onClick={onClickHandler} />
     </Box>
   )
 }
@@ -81,4 +81,6 @@ const AppBar = (props) => {
 
 // `
 
-export default AppBar
+export default styled(AppBar)`
+  flex: 0 1 auto;
+`

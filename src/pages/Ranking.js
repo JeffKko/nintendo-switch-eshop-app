@@ -21,6 +21,9 @@ const GameListContainer = styled.div`
 `
 
 const Sales = function() {
+  const RatesContext = useContext(Rates)
+  const RegionContext = useContext(Region)
+
   const [isShowSpinner, setIsShowSpinner] = useState(true)
   const [gameList, setGameList] = useState([])
   const [pageCount, setPageCount] = useState([10, -10])
@@ -28,10 +31,15 @@ const Sales = function() {
   const spinnerRef = useRef(null)
   const observer = useRef(null)
   const totalCount = useRef(null)
-
-  const RatesContext = useContext(Rates)
+  const currentCountryRef = useRef(Region.country)
 
   console.log('update')
+
+  useEffect(() => {
+    currentCountryRef.current = RegionContext.country
+    setPageCount([10, -10])
+    setGameList([])
+  }, [RegionContext.country])
 
   useEffect(() => {
     console.log('effect []')
@@ -65,14 +73,14 @@ const Sales = function() {
 
     console.log('fetchGameList')
 
-    axios(`${process.env.REACT_APP_API_URL}/ranking?count=${pageCount[0]}&offset=${pageCount[1]}&country=HK`)
+    axios(`${process.env.REACT_APP_API_URL}/ranking?count=${pageCount[0]}&offset=${pageCount[1]}&country=${currentCountryRef.current}`)
       .then(res => {
         gameList = res.data.contents
         totalCount.current = res.data.total
 
         console.log(res.data.contents.map(v => v.id).join())
 
-        return axios(`${process.env.REACT_APP_API_URL}/price?ids=${res.data.contents.map(v => v.id).join()}&country=HK`)
+        return axios(`${process.env.REACT_APP_API_URL}/price?ids=${res.data.contents.map(v => v.id).join()}&country=${currentCountryRef.current}`)
           .then(({data: {prices}}) => {
             console.log(prices)
 

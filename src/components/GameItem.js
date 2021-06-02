@@ -8,6 +8,7 @@ import {
 import { useContext } from 'react';
 import styled from 'styled-components'
 import Rates from '../contexts/Rates'
+import Region from '../contexts/Region'
 
 const GameItemContainer = styled(Card)`
   width: 100%;
@@ -72,13 +73,15 @@ const GameItem = ({className, data}) => {
   // console.log(data)
 
   const RatesContext = useContext(Rates)
+  const RegionContext = useContext(Region)
 
   function calculateDiscount(price, discontPrice) {
     return (100 - (Math.round(+discontPrice / +price * 100))) + '% OFF'
   }
 
   function exchangePrice(value) {
-    return Math.round(RatesContext.rates['HKD'] * value)
+    const symbol = RegionContext.symbols[RegionContext.country]
+    return Math.round(RatesContext.rates[symbol] * value)
   }
 
   return (
@@ -101,10 +104,13 @@ const GameItem = ({className, data}) => {
         <GameItemContentFooterPrice>
           {data.discountPrice
             ? <>
-                <span>{RatesContext.base}  {exchangePrice(data.discountPrice.raw_value)}</span>
+                {RatesContext.base}&nbsp;
+                <span style={{'fontWeight': '500'}}>{exchangePrice(data.discountPrice.raw_value)}</span>
                 <GameItemContentFooterPriceRegular>{exchangePrice(data.regularPrice.raw_value)}</GameItemContentFooterPriceRegular>
               </>
-            : <span>{RatesContext.base} {exchangePrice(data.regularPrice.raw_value)}</span>
+            : <>
+                {RatesContext.base}&nbsp;<span style={{'fontWeight': '500'}}>{exchangePrice(data.regularPrice.raw_value)}</span>
+              </>
           }
         </GameItemContentFooterPrice>
           <Button icon={<Favorite color="red" />} hoverIndicator />

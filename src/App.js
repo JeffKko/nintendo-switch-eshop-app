@@ -23,6 +23,7 @@ import Ranking from './pages/Ranking'
 import New from './pages/New'
 import './App.css';
 import AppBar from './AppBar'
+import CountrySelector from './CountrySelector'
 import RatesContext from './contexts/Rates'
 import RegionContext from './contexts/Region'
 
@@ -40,15 +41,12 @@ const theme = {
 }
 
 const Main = styled.main`
-  height: calc(var(--vh) * 100 - 60px - 64px);
+  flex: 1;
   overflow: auto;
   padding: 0 16px;
 `
 
 const Navbar = styled(Nav)`
-  /* position: fixed;
-  bottom: 0;
-  width: 100%; */
   height: 64px;
 `
 
@@ -81,24 +79,37 @@ const NavbarItemText = styled.div`
 
 const AppContainer = styled(Grommet)`
   height: calc(var(--vh) * 100);
+  display: flex;
+  flex-direction: column;
 `
+
+const defaultExchange = {
+  base: 'TWD',
+  rates: [],
+}
+
+const defaultRegion = {
+  country: 'HK',
+  symbols: {
+    HK: 'HKD',
+    US: 'USD',
+    JP: 'JPY',
+  }
+}
 
 function App() {
   const [isShowSidebar, setShowSidebar] = useState(false)
-
-  const exchange = {
-    base: 'TWD',
-    rates: [],
-  }
-
-  const region = {
-    country: 'HK',
-  }
+  const [isShowCountrySelector, setIsShowCountrySelector] = useState(false)
+  const [region, setRegion] = useState(defaultRegion)
+  const [exchange, setExchange] = useState(defaultExchange)
 
   useEffect(() => {
     axios(`${process.env.REACT_APP_API_URL}/rates`)
       .then(res => {
-        exchange.rates = res.data
+        setExchange(prev => ({
+          ...prev,
+          rates: res.data,
+        }))
       })
   }, [])
 
@@ -107,8 +118,10 @@ function App() {
 
       <RatesContext.Provider value={exchange}>
       <RegionContext.Provider value={region}>
-        <AppBar setShowSidebar={setShowSidebar}>
-        </AppBar>
+        <AppBar
+          setShowSidebar={setShowSidebar}
+          setIsShowCountrySelector={setIsShowCountrySelector}
+        />
         <Main>
           <Box direction='row' flex overflow={{ horizontal: 'hidden' }}>
             <Box flex align='center' justify='center'>
@@ -158,6 +171,14 @@ function App() {
             <NavbarItemText>New</NavbarItemText>
           </NavbarItem>
         </Navbar>
+        {
+          isShowCountrySelector &&
+          <CountrySelector
+            region={region}
+            setRegion={setRegion}
+            setIsShowCountrySelector={setIsShowCountrySelector}
+          />
+        }
       </RegionContext.Provider>
       </RatesContext.Provider>
     </AppContainer>
