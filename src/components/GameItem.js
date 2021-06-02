@@ -42,7 +42,12 @@ const GameItemContentBadge = styled.div`
 const GameItemContentTitle = styled.h2`
   margin: 0;
   font-size: 16px;
-  /* font-weight: bold; */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-height: 54px;
 `
 
 const GameItemContentFooter = styled.div`
@@ -71,7 +76,6 @@ const GameItemContentFooterPriceRegular = styled.span`
 
 const GameItem = ({className, data}) => {
   // console.log(data)
-
   const RatesContext = useContext(Rates)
   const RegionContext = useContext(Region)
 

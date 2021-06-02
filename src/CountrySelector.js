@@ -1,16 +1,24 @@
 import {
   useState,
   useEffect,
-  useRef,
 } from 'react'
 import styled from 'styled-components'
 import {
-  // List,
   Button,
 } from 'grommet'
 import {
   Close,
 } from 'grommet-icons';
+
+export const CountrySelectorSkeleton = styled.section`
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  background-color: #FFFFFF;
+`
 
 const CountrySelectorContainer = styled.section`
   position: fixed;
@@ -22,7 +30,14 @@ const CountrySelectorContainer = styled.section`
   background-color: #FFFFFF;
   display: flex;
   flex-direction: column;
-  /* max-height: calc(var(--vh, 1vh) * 100); */
+  transition: transform 400ms, opacity 400ms;
+  transform: translate(0, 100%);
+  /* opacity: 0; */
+
+  &.is-open {
+    transform: translate(0, 0);
+    /* opacity: 1; */
+  }
 `
 
 const CountrySelectorHeader = styled.header`
@@ -74,9 +89,13 @@ const countryList = [
   'JP',
 ]
 
-const CountrySelector = ({region, setRegion, setIsShowCountrySelector}) => {
+const CountrySelector = ({
+  region,
+  setRegion,
+  isShowCountrySelector,
+  setIsShowCountrySelector,
+}) => {
   const [selectedCountry, setSelectedCountry] = useState(region.country)
-  // const regionRef = useRef(region)
 
   function onCloseHandler() {
     setIsShowCountrySelector(false)
@@ -90,12 +109,12 @@ const CountrySelector = ({region, setRegion, setIsShowCountrySelector}) => {
     setIsShowCountrySelector(false)
   }
 
-  // useEffect(() => {
-  //   setSelectedCountry(regionRef.curent)
-  // }, [])
+  useEffect(() => {
+    setSelectedCountry(region.country)
+  }, [isShowCountrySelector, region])
 
   return (
-    <CountrySelectorContainer>
+    <CountrySelectorContainer className={isShowCountrySelector ? 'is-open': ''}>
       <CountrySelectorHeader>
         <CountrySelectorHeaderTitle>
           Select a Country

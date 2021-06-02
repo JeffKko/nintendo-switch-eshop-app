@@ -1,3 +1,4 @@
+import './App.css'
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import styled from 'styled-components'
@@ -8,7 +9,6 @@ import {
   Collapsible,
 } from 'grommet';
 import {
-  Notification,
   Currency,
   Trophy,
   Grow,
@@ -21,9 +21,9 @@ import {
 import Sales from './pages/Sales'
 import Ranking from './pages/Ranking'
 import New from './pages/New'
-import './App.css';
 import AppBar from './AppBar'
-import CountrySelector from './CountrySelector'
+// import CountrySelector from './CountrySelector'
+import {CountrySelectorSkeleton} from './CountrySelector'
 import RatesContext from './contexts/Rates'
 import RegionContext from './contexts/Region'
 
@@ -82,6 +82,8 @@ const AppContainer = styled(Grommet)`
   display: flex;
   flex-direction: column;
 `
+
+const CountrySelector = React.lazy(() => import('./CountrySelector'))
 
 const defaultExchange = {
   base: 'TWD',
@@ -171,14 +173,23 @@ function App() {
             <NavbarItemText>New</NavbarItemText>
           </NavbarItem>
         </Navbar>
-        {
+        {/* {
           isShowCountrySelector &&
           <CountrySelector
             region={region}
             setRegion={setRegion}
+            isShowCountrySelector={isShowCountrySelector}
             setIsShowCountrySelector={setIsShowCountrySelector}
           />
-        }
+        } */}
+        <React.Suspense fallback={<CountrySelectorSkeleton />}>
+          <CountrySelector
+            region={region}
+            setRegion={setRegion}
+            isShowCountrySelector={isShowCountrySelector}
+            setIsShowCountrySelector={setIsShowCountrySelector}
+          />
+        </React.Suspense>
       </RegionContext.Provider>
       </RatesContext.Provider>
     </AppContainer>
