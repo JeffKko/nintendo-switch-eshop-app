@@ -8,7 +8,11 @@ import {
 } from 'grommet'
 import {
   Close,
-} from 'grommet-icons';
+  Checkmark,
+} from 'grommet-icons'
+import hkFlagImage from './assets/icons/hk.svg'
+import jpFlagImage from './assets/icons/jp.svg'
+import usFlagImage from './assets/icons/us.svg'
 
 export const CountrySelectorSkeleton = styled.section`
   position: fixed;
@@ -65,9 +69,12 @@ const CountrySelectorFooter = styled.div`
 
 const CountrySelectorHeaderTitle = styled.h1`
   margin: 0;
+  font-size: 18px;
+  font-weight: 600;
 `
 
 const List = styled.ul`
+
 `
 
 const ListItem = styled.li`
@@ -83,11 +90,31 @@ const ListItem = styled.li`
   }
 `
 
+const ListItemMain = styled.div`
+  display: flex;
+  align-items: center;
+`
+
 const countryList = [
   'HK',
   'US',
   'JP',
 ]
+
+const countryMap = {
+  HK: {
+    name: '香港',
+    flag: hkFlagImage,
+  },
+  US: {
+    name: '美國',
+    flag: usFlagImage,
+  },
+  JP: {
+    name: '日本',
+    flag: jpFlagImage,
+  }
+}
 
 const CountrySelector = ({
   region,
@@ -117,17 +144,20 @@ const CountrySelector = ({
     <CountrySelectorContainer className={isShowCountrySelector ? 'is-open': ''}>
       <CountrySelectorHeader>
         <CountrySelectorHeaderTitle>
-          Select a Country
+          Switch eShop by Region
         </CountrySelectorHeaderTitle>
         <Button icon={<Close />} onClick={onCloseHandler} />
       </CountrySelectorHeader>
       <CountrySelectorMain>
         <List>
-          {countryList.map(country => {
+          {countryList.map(iso => {
             return (
-              <ListItem key={country} onClick={() => setSelectedCountry(country)}>
-                <span>{country}</span>
-                {(selectedCountry === country) && <span>O</span>}
+              <ListItem key={iso} onClick={() => setSelectedCountry(iso)}>
+                <ListItemMain>
+                  <img width="32" height="32" src={countryMap[iso].flag} alt={countryMap[iso].name} />
+                  <span style={{'marginLeft': '16px'}}>{countryMap[iso].name}</span>
+                </ListItemMain>
+                {(selectedCountry === iso) && <Checkmark />}
               </ListItem>
             )
           })}

@@ -19,8 +19,8 @@ const GameItemContainer = styled(Card)`
 `
 
 const GameItemImage = styled.img`
-  width: 120px;
-  height: 120px;
+  width: 110px;
+  height: 110px;
   object-fit: cover;
 `
 
@@ -43,7 +43,7 @@ const GameItemContentTitle = styled.h2`
   margin: 0;
   font-size: 16px;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -74,6 +74,27 @@ const GameItemContentFooterPriceRegular = styled.span`
   margin-left: 8px;
 `
 
+const GameItemContentDate = styled.div`
+  font-size: 12px;
+  margin-bottom: 4px;
+  color: #777777;
+`
+
+const GameItemContentNewBadge = styled.span`
+  display: inline-block;
+  font-size: 12px;
+  line-height: 14px;
+  border: 1px solid #00873D;
+  border-radius: 15px;
+  color: #00873D;
+  padding: 0 8px;
+  margin-left: 8px;
+
+  &:before {
+    content: 'NEW';
+  }
+`
+
 const GameItem = ({className, data}) => {
   // console.log(data)
   const RatesContext = useContext(Rates)
@@ -102,7 +123,11 @@ const GameItem = ({className, data}) => {
             { calculateDiscount(data.regularPrice.raw_value, data.discountPrice.raw_value) }
           </GameItemContentBadge>
         }
-        <div>{data.id}</div>
+        <GameItemContentDate>
+          {data.release_date_on_eshop}
+          {data.is_new && <GameItemContentNewBadge />}
+        </GameItemContentDate>
+        {/* <GameItemContentNewBadge>NEW</GameItemContentNewBadge> */}
         <GameItemContentTitle>{data.formal_name}</GameItemContentTitle>
         <GameItemContentFooter>
         <GameItemContentFooterPrice>
