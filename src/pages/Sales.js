@@ -5,6 +5,10 @@ import {
   useCallback,
   useContext,
 } from 'react'
+import {
+  Link,
+  useLocation,
+} from 'react-router-dom'
 import axios from 'axios'
 import styled from 'styled-components'
 import Rates from '../contexts/Rates'
@@ -20,7 +24,21 @@ const GameListContainer = styled.div`
   padding: 16px 0;
 `
 
+const GameListItem = styled(Link)`
+  text-decoration: none;
+  display: block;
+
+  &:active {
+    opacity: 0.8;
+  }
+
+  & + & {
+    margin-top: 16px;
+  }
+`
+
 const Sales = function() {
+  const location = useLocation()
   const RatesContext = useContext(Rates)
   const RegionContext = useContext(Region)
 
@@ -36,7 +54,6 @@ const Sales = function() {
   console.log('update')
 
   useEffect(() => {
-    console.log('update country')
     currentCountryRef.current = RegionContext.country
     setPageCount([10, -10])
     setGameList([])
@@ -114,7 +131,19 @@ const Sales = function() {
 
   return (
     <GameListContainer>
-      {!!Object.keys(RatesContext.rates).length && !!gameList.length && gameList.map((gData, i) => <GameItem data={gData} key={gData.id} />)}
+      {!!Object.keys(RatesContext.rates).length && !!gameList.length && gameList.map((gData, i) => {
+        return (
+          <GameListItem
+            key={gData.id}
+            to={{
+              pathname: `/game/${gData.id}`,
+              state: { game: location },
+            }}
+          >
+            <GameItem data={gData} />
+          </GameListItem>
+        )
+      })}
       {isShowSpinner && <div ref={spinnerRef}><ListSpinner /></div>}
     </GameListContainer>
   )

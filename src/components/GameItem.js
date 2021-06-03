@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import {
   Card,
   Button,
@@ -5,17 +6,12 @@ import {
 import {
   Favorite,
 } from 'grommet-icons';
-import { useContext } from 'react';
 import styled from 'styled-components'
 import Rates from '../contexts/Rates'
 import Region from '../contexts/Region'
 
 const GameItemContainer = styled(Card)`
   width: 100%;
-
-  & + & {
-    margin-top: 16px;
-  }
 `
 
 const GameItemImage = styled.img`
@@ -67,6 +63,7 @@ const GameItemContentFooterPrice = styled.div`
   display: flex;
   align-items: center;
 `
+
 const GameItemContentFooterPriceRegular = styled.span`
   font-size: 12px;
   text-decoration: line-through;
