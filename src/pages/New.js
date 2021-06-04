@@ -136,8 +136,11 @@ const Sales = function() {
           <GameListItem
             key={gData.id}
             to={{
-              pathname: `/game/${gData.id}`,
-              state: { game: location },
+              pathname: `/game/${gData.formal_name.replace(/ /g, '-')}`,
+              state: {
+                gameDetail: location,
+                data: gData,
+              },
             }}
           >
             <GameItem data={gData} />
