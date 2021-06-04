@@ -92,7 +92,7 @@ const GameDetailMainReleaseInfo = styled.p`
 const GameDetailDiscountInfo = styled.p`
   font-size: 12px;
   color: #777777;
-  margin: 4px 0 36px 0;
+  margin: 4px 0 0 0;
 `
 
 const GameDetailDisciamer = styled.div`
@@ -239,26 +239,30 @@ const GameDetail = () => {
             }
           </div>
           <div style={{
-            display: 'flex',
-            alignItems: 'flex-end',
+            marginBottom: '36px',
           }}>
-            <img
-              style={{
-                marginRight: '8px',
-              }}
-              src={countryMap[RegionContext.country].flag}
-              alt={RegionContext.country}
-            />
-            <GamePrice
-              rates={RatesContext}
-              region={RegionContext}
-              discountPrice={gameData.discountPrice.raw_value}
-              regularPrice={gameData.regularPrice.raw_value}
-            />
+            <div style={{
+              display: 'flex',
+              alignItems: 'flex-end',
+            }}>
+              <img
+                style={{
+                  marginRight: '8px',
+                }}
+                src={countryMap[RegionContext.country].flag}
+                alt={RegionContext.country}
+              />
+              <GamePrice
+                rates={RatesContext}
+                region={RegionContext}
+                discountPrice={gameData.discountPrice ? gameData.discountPrice.raw_value : null}
+                regularPrice={gameData.regularPrice.raw_value}
+              />
+            </div>
+            {discountInfo &&
+              <GameDetailDiscountInfo>{discountInfo}</GameDetailDiscountInfo>
+            }
           </div>
-          {discountInfo &&
-            <GameDetailDiscountInfo>{discountInfo}</GameDetailDiscountInfo>
-          }
           {
             gameData.strong_disclaimer &&
             <GameDetailDisciamer>{gameData.strong_disclaimer}</GameDetailDisciamer>
