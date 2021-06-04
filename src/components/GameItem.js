@@ -1,11 +1,11 @@
-import { useContext } from 'react';
+import { useContext } from 'react'
 import {
   Card,
   Button,
-} from 'grommet';
+} from 'grommet'
 import {
   Favorite,
-} from 'grommet-icons';
+} from 'grommet-icons'
 import styled from 'styled-components'
 import Rates from '../contexts/Rates'
 import Region from '../contexts/Region'

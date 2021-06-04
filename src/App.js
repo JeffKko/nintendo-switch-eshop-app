@@ -12,12 +12,12 @@ import {
   Box,
   Nav,
   Grommet,
-} from 'grommet';
+} from 'grommet'
 import {
   Currency,
   Trophy,
   Grow,
-} from 'grommet-icons';
+} from 'grommet-icons'
 import Sales from './pages/Sales'
 import Ranking from './pages/Ranking'
 import New from './pages/New'
@@ -102,7 +102,7 @@ const defaultRegion = {
 
 function App() {
   const location = useLocation()
-  const gameDetailLocation = location.state && location.state.game
+  const gameDetailLocation = location.state && location.state.gameDetail
   const [isShowCountrySelector, setIsShowCountrySelector] = useState(false)
   const [region, setRegion] = useState(defaultRegion)
   const [exchange, setExchange] = useState(defaultExchange)
@@ -168,7 +168,7 @@ function App() {
           />
         </React.Suspense>
         {gameDetailLocation &&
-          <Route path="/game/:id">
+          <Route path="/game/:name">
             <GameDetail />
           </Route>
         }

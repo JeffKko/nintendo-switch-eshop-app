@@ -9,7 +9,7 @@ const axios = require('axios')
 
 app.use(cors({
   origin: [
-    'http://192.168.68.109:3000',
+    'http://192.168.68.110:3000',
     'http://localhost:3000',
   ],
   credentials: true,
