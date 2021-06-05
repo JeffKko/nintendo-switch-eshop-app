@@ -6,7 +6,7 @@ import {
   useHistory,
   useLocation,
 } from 'react-router'
-import styled from 'styled-components'
+import styled, {keyframes} from 'styled-components'
 import Rates from '../contexts/Rates'
 import Region from '../contexts/Region'
 import {
@@ -23,6 +23,18 @@ import hkFlagImage from '../assets/icons/hk.svg'
 import jpFlagImage from '../assets/icons/jp.svg'
 import usFlagImage from '../assets/icons/us.svg'
 
+const slide = keyframes`
+  from {
+    transform: translate(0, 100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: none;
+    opacity: 1;
+  }
+`
+
 const GameDetailContainer = styled.section`
   position: fixed;
   top: 0;
@@ -33,14 +45,7 @@ const GameDetailContainer = styled.section`
   background-color: #FFFFFF;
   display: flex;
   flex-direction: column;
-  /* transition: transform 400ms, opacity 400ms;
-  transform: translate(0, 100%);
-  opacity: 0; */
-
-  &.is-open {
-    /* transform: translate(0, 0);
-    opacity: 1; */
-  }
+  animation: ${slide} 400ms both 1;
 `
 
 const GameDetailHeader = styled.header`
@@ -115,14 +120,6 @@ const GameDetailGalleryInner = styled(Carousel)`
   right: 0;
   bottom: 0;
   left: 0;
-`
-
-const GameDetailFooter = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 16px 24px;
-  border-top: 1px solid #DADADA;
 `
 
 const countryMap = {
