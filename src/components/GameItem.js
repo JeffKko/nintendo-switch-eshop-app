@@ -1,4 +1,6 @@
 import { useContext } from 'react'
+import { useSelector } from 'react-redux'
+import { selectRates } from '../stores/slice/rates'
 import {
   Card,
   Button,
@@ -7,8 +9,8 @@ import {
   Favorite,
 } from 'grommet-icons'
 import styled from 'styled-components'
-import Rates from '../contexts/Rates'
 import Region from '../contexts/Region'
+import GamePrice from './GamePrice'
 
 const GameItemContainer = styled(Card)`
   width: 100%;
@@ -58,19 +60,6 @@ const GameItemContentFooter = styled.div`
   box-sizing: border-box;
 `
 
-const GameItemContentFooterPrice = styled.div`
-  color: #FF4040;
-  display: flex;
-  align-items: center;
-`
-
-const GameItemContentFooterPriceRegular = styled.span`
-  font-size: 12px;
-  text-decoration: line-through;
-  color: #777777;
-  margin-left: 8px;
-`
-
 const GameItemContentDate = styled.div`
   font-size: 12px;
   margin-bottom: 4px;
@@ -94,16 +83,11 @@ const GameItemContentNewBadge = styled.span`
 
 const GameItem = ({className, data}) => {
   // console.log(data)
-  const RatesContext = useContext(Rates)
+  const ratesState = useSelector(selectRates)
   const RegionContext = useContext(Region)
 
   function calculateDiscount(price, discontPrice) {
     return (100 - (Math.round(+discontPrice / +price * 100))) + '% OFF'
-  }
-
-  function exchangePrice(value) {
-    const symbol = RegionContext.symbols[RegionContext.country]
-    return Math.round(RatesContext.rates[symbol] * value)
   }
 
   return (
@@ -124,26 +108,17 @@ const GameItem = ({className, data}) => {
           {data.release_date_on_eshop}
           {data.is_new && <GameItemContentNewBadge />}
         </GameItemContentDate>
-        {/* <GameItemContentNewBadge>NEW</GameItemContentNewBadge> */}
         <GameItemContentTitle>{data.formal_name}</GameItemContentTitle>
         <GameItemContentFooter>
-        <GameItemContentFooterPrice>
-          {data.discountPrice
-            ? <>
-                {RatesContext.base}&nbsp;
-                <span style={{'fontWeight': '500'}}>{exchangePrice(data.discountPrice.raw_value)}</span>
-                <GameItemContentFooterPriceRegular>{exchangePrice(data.regularPrice.raw_value)}</GameItemContentFooterPriceRegular>
-              </>
-            : <>
-                {RatesContext.base}&nbsp;<span style={{'fontWeight': '500'}}>{exchangePrice(data.regularPrice.raw_value)}</span>
-              </>
-          }
-        </GameItemContentFooterPrice>
+        <GamePrice
+          rates={ratesState}
+          region={RegionContext}
+          discountPrice={data.discountPrice ? data.discountPrice.raw_value : null}
+          regularPrice={data.regularPrice.raw_value}
+        />
           <Button icon={<Favorite color="red" />} hoverIndicator />
-          {/* <Button icon={<ShareOption color="plain" />} hoverIndicator /> */}
         </GameItemContentFooter>
       </GameItemContent>
-      {/* <GameLink /> */}
     </GameItemContainer>
   )
 }

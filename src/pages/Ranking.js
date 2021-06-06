@@ -9,9 +9,10 @@ import {
   Link,
   useLocation,
 } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { selectRates } from '../stores/slice/rates'
 import axios from 'axios'
 import styled from 'styled-components'
-import Rates from '../contexts/Rates'
 import Region from '../contexts/Region'
 import GameItem from '../components/GameItem'
 import { Spinner } from 'grommet'
@@ -39,7 +40,7 @@ const GameListItem = styled(Link)`
 
 const Sales = function() {
   const location = useLocation()
-  const RatesContext = useContext(Rates)
+  const ratesState = useSelector(selectRates)
   const RegionContext = useContext(Region)
 
   const [isShowSpinner, setIsShowSpinner] = useState(true)
@@ -131,7 +132,7 @@ const Sales = function() {
 
   return (
     <GameListContainer>
-      {!!Object.keys(RatesContext.rates).length && !!gameList.length && gameList.map((gData, i) => {
+      {!!Object.keys(ratesState).length && !!gameList.length && gameList.map((gData, i) => {
         return (
           <GameListItem
             key={gData.id}

@@ -10,19 +10,9 @@ import {
   Close,
   Checkmark,
 } from 'grommet-icons'
-import hkFlagImage from './assets/icons/hk.svg'
-import jpFlagImage from './assets/icons/jp.svg'
-import usFlagImage from './assets/icons/us.svg'
-
-export const CountrySelectorSkeleton = styled.section`
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 100;
-  background-color: #FFFFFF;
-`
+import hkFlagImage from '../assets/icons/hk.svg'
+import jpFlagImage from '../assets/icons/jp.svg'
+import usFlagImage from '../assets/icons/us.svg'
 
 const CountrySelectorContainer = styled.section`
   position: fixed;

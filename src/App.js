@@ -6,6 +6,12 @@ import {
   NavLink,
   useLocation,
 } from 'react-router-dom'
+import {
+  useDispatch,
+} from 'react-redux'
+import {
+  setRates,
+} from './stores/slice/rates'
 import axios from 'axios'
 import styled from 'styled-components'
 import {
@@ -22,11 +28,9 @@ import Sales from './pages/Sales'
 import Ranking from './pages/Ranking'
 import New from './pages/New'
 import GameDetail from './pages/GameDetail'
-import AppBar from './AppBar'
+import AppBar from './components/AppBar'
 // import CountrySelector from './CountrySelector'
-import {CountrySelectorSkeleton} from './CountrySelector'
-import RatesContext from './contexts/Rates'
-import RegionContext from './contexts/Region'
+import RegionContext, { defaultRegion } from './contexts/Region'
 
 const theme = {
   global: {
@@ -84,46 +88,26 @@ const AppContainer = styled(Grommet)`
   flex-direction: column;
 `
 
-const CountrySelector = React.lazy(() => import('./CountrySelector'))
-
-const defaultExchange = {
-  base: 'TWD',
-  rates: [],
-}
-
-const defaultRegion = {
-  country: 'HK',
-  symbols: {
-    HK: 'HKD',
-    US: 'USD',
-    JP: 'JPY',
-  }
-}
+const CountrySelector = React.lazy(() => import('./components/CountrySelector'))
 
 function App() {
+  const dispatch = useDispatch()
   const location = useLocation()
   const gameDetailLocation = location.state && location.state.gameDetail
   const [isShowCountrySelector, setIsShowCountrySelector] = useState(false)
   const [region, setRegion] = useState(defaultRegion)
-  const [exchange, setExchange] = useState(defaultExchange)
 
   useEffect(() => {
     axios(`${process.env.REACT_APP_API_URL}/rates`)
       .then(res => {
-        setExchange(prev => ({
-          ...prev,
-          rates: res.data,
-        }))
+        dispatch(setRates(res.data))
       })
   }, [])
 
   return (
     <AppContainer theme={theme} themeMode="dark">
-      <RatesContext.Provider value={exchange}>
       <RegionContext.Provider value={region}>
-        <AppBar
-          setIsShowCountrySelector={setIsShowCountrySelector}
-        />
+        <AppBar setIsShowCountrySelector={setIsShowCountrySelector} />
         <Main>
           <Box flex align='center' justify='center'>
             <Switch location={gameDetailLocation || location}>
@@ -159,7 +143,7 @@ function App() {
             <NavbarItemText>New</NavbarItemText>
           </NavbarItem>
         </Navbar>
-        <React.Suspense fallback={<CountrySelectorSkeleton />}>
+        <React.Suspense fallback={<div />}>
           <CountrySelector
             region={region}
             setRegion={setRegion}
@@ -173,7 +157,6 @@ function App() {
           </Route>
         }
       </RegionContext.Provider>
-      </RatesContext.Provider>
     </AppContainer>
   );
 }

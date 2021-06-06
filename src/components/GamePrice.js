@@ -1,12 +1,12 @@
 import styled from 'styled-components'
 
-const GameItemContentFooterPrice = styled.div`
+const GamePriceContainer = styled.div`
   color: #FF4040;
   display: flex;
   align-items: center;
 `
 
-const GameItemContentFooterPriceRegular = styled.span`
+const GamePriceRegular = styled.span`
   font-size: 12px;
   text-decoration: line-through;
   color: #777777;
@@ -21,18 +21,20 @@ const GamePrice = ({rates, region, discountPrice, regularPrice}) => {
   }
 
   return (
-    <GameItemContentFooterPrice>
+    <GamePriceContainer>
       {discountPrice
         ? <>
             {rates.base}&nbsp;
             <span style={{'fontWeight': '500'}}>{exchangePrice(discountPrice)}</span>
-            <GameItemContentFooterPriceRegular>{exchangePrice(regularPrice)}</GameItemContentFooterPriceRegular>
+            <GamePriceRegular>{exchangePrice(regularPrice)}</GamePriceRegular>
           </>
-        : <>
-            {rates.base}&nbsp;<span style={{'fontWeight': '500'}}>{exchangePrice(regularPrice)}</span>
-          </>
+        : regularPrice === '0'
+          ? '限時免費中'
+          : <>
+              {rates.base}&nbsp;<span style={{'fontWeight': '500'}}>{exchangePrice(regularPrice)}</span>
+            </>
       }
-    </GameItemContentFooterPrice>
+    </GamePriceContainer>
   )
 }
 

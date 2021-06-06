@@ -6,8 +6,9 @@ import {
   useHistory,
   useLocation,
 } from 'react-router'
-import styled, {keyframes} from 'styled-components'
-import Rates from '../contexts/Rates'
+import { useSelector } from 'react-redux'
+import { selectRates } from '../stores/slice/rates'
+import styled, { keyframes } from 'styled-components'
 import Region from '../contexts/Region'
 import {
   Button,
@@ -138,7 +139,7 @@ const countryMap = {
 }
 
 const GameDetail = () => {
-  const RatesContext = useContext(Rates)
+  const ratesState = useSelector(selectRates)
   const RegionContext = useContext(Region)
   const history = useHistory()
   const location = useLocation()
@@ -157,13 +158,13 @@ const GameDetail = () => {
 
     function exchangePrice(value) {
       const symbol = RegionContext.symbols[RegionContext.country]
-      return Math.round(RatesContext.rates[symbol] * value)
+      return Math.round(ratesState.rates[symbol] * value)
     }
 
     return exchangePrice(
       (+gameData.regularPrice.raw_value) - (+gameData.discountPrice.raw_value)
     )
-  }, [gameData.discountPrice, gameData.regularPrice, RegionContext, RatesContext])
+  }, [gameData.discountPrice, gameData.regularPrice, RegionContext, ratesState])
 
   const discountRemainDays = useMemo(() => {
     if (!gameData.discountPrice) return null
@@ -227,7 +228,7 @@ const GameDetail = () => {
               gameData.discountPrice &&
               <>
                 <GameDetailTag>
-                  省下 {RatesContext.base} {discountRangeNum}
+                  省下 {ratesState.base} {discountRangeNum}
                 </GameDetailTag>
                 <GameDetailTag>
                   特價剩下 {discountRemainDays} 天
@@ -250,7 +251,7 @@ const GameDetail = () => {
                 alt={RegionContext.country}
               />
               <GamePrice
-                rates={RatesContext}
+                rates={ratesState}
                 region={RegionContext}
                 discountPrice={gameData.discountPrice ? gameData.discountPrice.raw_value : null}
                 regularPrice={gameData.regularPrice.raw_value}
